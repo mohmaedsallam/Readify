@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
@@ -40,8 +34,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF8F3",
-    // alignItems: "center",
-    // justifyContent: "center",
+
     paddingVertical: 20,
   },
   title: {
@@ -51,13 +44,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   arrowContainer: {
-    // backgroundColor: "#B66F39",
     alignSelf: "flex-end",
   },
   arrow: {
     backgroundColor: "#B66F39",
     top: 10,
-    // left: 290,
     height: 60,
     width: 60,
     borderRadius: 30,

@@ -33,8 +33,9 @@ const initialBookCategories = [
 const Categories = () => {
   const router = useRouter();
   const [bookCategories, setBookCategories] = useState(initialBookCategories);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const handlePress = (index: number) => {
+  const handlePress = (index, name) => {
     setBookCategories((prevState) =>
       prevState.map((category, i) =>
         i === index
@@ -48,7 +49,17 @@ const Categories = () => {
           : category
       )
     );
+
+    if (selectedCategories.includes(name)) {
+      setSelectedCategories((prevState) =>
+        prevState.filter((category) => category !== name)
+      );
+    } else {
+      setSelectedCategories((prevState) => [...prevState, name]);
+    }
   };
+
+  console.log(selectedCategories);
 
   return (
     <View style={styles.container}>
@@ -60,9 +71,9 @@ const Categories = () => {
           <View key={index} style={[styles.category]}>
             <TouchableOpacity
               style={[styles.circle, { backgroundColor: category.color }]}
-              onPress={() => handlePress(index)}
+              onPress={() => handlePress(index, category.name)}
             >
-              <Ionicons name={category.icon as any} size={40} color="#6B240C" />
+              <Ionicons name={category.icon} size={40} color="#6B240C" />
             </TouchableOpacity>
             <Text style={styles.categoryName}>{category.name}</Text>
           </View>
@@ -77,7 +88,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    // paddingVertical: 20,
   },
   scrollView: {
     flexDirection: "row",
@@ -104,7 +114,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: "center",
     fontWeight: "bold",
-    // color: "#000",
     color: "#6B240C",
   },
 });

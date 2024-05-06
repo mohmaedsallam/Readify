@@ -1,33 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  FlatList,
   StyleSheet,
   ActivityIndicator,
+  ScrollView,
+  FlatList,
 } from "react-native";
-import Listings from "../../components/Listings";
-import { useQuery } from "@tanstack/react-query";
+import BookCard from "../../components/BookCard"; // Assuming you have a BookCard component
+import CustomFlatList from "../../components/CustomFlatList";
 
 const Home = () => {
-  const { data, isLoading } = useQuery({
-    queryFn: () =>
-      fetch(
-        "https://www.googleapis.com/books/v1/volumes?q=react&key=AIzaSyBtGaliMMof_6FS8qZe6BgxWGrXJL7kuRk"
-      ).then((response) => response.json()),
-    queryKey: ["book"],
-  });
-
-  if (isLoading) return <ActivityIndicator size="small" color="#0000ff" />;
   return (
-    <View style={styles.container}>
-      <Listings data={data} />
-    </View>
+    <ScrollView style={styles.container}>
+      <CustomFlatList ActivityIndicatorColor={"#FF5733"} query={"Thriller"} />
+      <CustomFlatList
+        ActivityIndicatorColor={"#FAF4EF"}
+        query={"harry potter"}
+      />
+      <CustomFlatList ActivityIndicatorColor={"#FAF4EF"} query={"basketball"} />
+      <CustomFlatList ActivityIndicatorColor={"#FAF4EF"} query={"Mystery"} />
+      <CustomFlatList ActivityIndicatorColor={"#FAF4EF"} query={"Children"} />
+      <CustomFlatList ActivityIndicatorColor={"#FAF4EF"} query={"horror"} />
+      <CustomFlatList ActivityIndicatorColor={"#FAF4EF"} query={"crime"} />
+      <CustomFlatList ActivityIndicatorColor={"#FAF4EF"} query={"cinema"} />
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: "#FFF8F3", flex: 1 },
+  container: {
+    backgroundColor: "#FAF4EF",
+    padding: 10,
+  },
 });
 
 export default Home;

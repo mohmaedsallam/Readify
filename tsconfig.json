@@ -6,12 +6,18 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "app/index.jsx",
     "constants/Colors.js",
     "app/(tabs)/Home.jsx",
     "components/Listings.jsx",
-    "app/(tabs)/_layout.jsx"
+    "app/(tabs)/_layout.jsx",
+    "components/HomeHeader.tsx",
+    "app/listing/[id].jsx",
+    "services/api.js",
+    "components/BookCard.jsx"
   ]
 }
