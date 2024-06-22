@@ -1,34 +1,3 @@
-// import React, { useLayoutEffect } from "react";
-// import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-// import { useNavigation, useRouter } from "expo-router";
-// import { Ionicons } from "@expo/vector-icons";
-
-// const settings = () => {
-//   const navigation = useNavigation();
-//   const router = useRouter();
-
-//   useLayoutEffect(() => {
-//     navigation.setOptions({
-//       headerTransparent: false,
-
-//       headerLeft: () => (
-//         <TouchableOpacity
-//           onPress={() => {
-//             router.back();
-//           }}
-//         >
-//           <Ionicons name="close-outline" size={28} color={"#fff"} />
-//         </TouchableOpacity>
-//       ),
-//     });
-//   }, [navigation]);
-//   return (
-//     <View>
-//       <Text>settings</Text>
-//     </View>
-//   );
-// };
-
 import React, { useLayoutEffect } from "react";
 import {
   StyleSheet,
