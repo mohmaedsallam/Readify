@@ -6,13 +6,16 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  ScrollView,
 } from "react-native";
 import React, { useState, useLayoutEffect, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import Categories from "../../components/Categories";
+// import Categories from "../../components/Categories";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, useNavigation } from "expo-router";
 import Notification from "../../components/Notification";
+import { useRouter } from "expo-router";
+
 const initialBookCategories = [
   { name: "Thriller", icon: "albums-outline", color: "#FFD5B4" },
   { name: "Romance", icon: "heart-outline", color: "#F0B182" },
@@ -81,7 +84,7 @@ const Search = () => {
         </SafeAreaView>
       ),
     });
-  }, [navigation]);
+  }, [navigation, searchQuery]);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -141,13 +144,67 @@ const Search = () => {
           />
         </>
       ) : (
-        <Categories />
+        <Categories setSearchQuery={setSearchQuery} />
       )}
     </SafeAreaView>
   );
 };
 
 export default Search;
+
+const Categories = ({ setSearchQuery }) => {
+  const router = useRouter();
+  const [bookCategories, setBookCategories] = useState(initialBookCategories);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const handlePress = (index, name) => {
+    setBookCategories((prevState) =>
+      prevState.map((category, i) =>
+        i === index
+          ? {
+              ...category,
+              icon:
+                category.icon === "checkmark"
+                  ? initialBookCategories[i].icon
+                  : "checkmark",
+            }
+          : category
+      )
+    );
+
+    if (selectedCategories.includes(name)) {
+      setSelectedCategories((prevState) =>
+        prevState.filter((category) => category !== name)
+      );
+    } else {
+      setSelectedCategories((prevState) => [...prevState, name]);
+      setSearchQuery(name); // Set the search query when a category is selected
+    }
+  };
+
+  console.log(selectedCategories);
+
+  return (
+    <View style={styles.categoriesContainer}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollView}
+      >
+        {bookCategories.map((category, index) => (
+          <View key={index} style={[styles.category]}>
+            <TouchableOpacity
+              style={[styles.circle, { backgroundColor: category.color }]}
+              onPress={() => handlePress(index, category.name)}
+            >
+              <Ionicons name={category.icon} size={40} color="#6B240C" />
+            </TouchableOpacity>
+            <Text style={styles.categoryName}>{category.name}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: { backgroundColor: "#FAF4EF", flex: 1 },
@@ -193,7 +250,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: "center",
     fontWeight: "bold",
-    // color: "#000",
     color: "#6B240C",
   },
   bookContainer: {
@@ -217,5 +273,11 @@ const styles = StyleSheet.create({
   columnWrapper: {
     justifyContent: "space-between",
     marginHorizontal: 16,
+  },
+  //
+  categoriesContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

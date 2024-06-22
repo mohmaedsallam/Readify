@@ -10,11 +10,14 @@ import {
   TouchableOpacity,
   ImageBackground,
   Share,
+  Pressable,
+  Linking,
 } from "react-native";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { router, useNavigation, useRouter } from "expo-router";
 import Colors from "../constants/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import AntDesign from "@expo/vector-icons/AntDesign";
+import DiscussionForum from "./DiscussionForum";
 const DetailsPage = ({ id }) => {
   const [book, setBook] = useState([]);
   const [loaded, setLoaded] = useState(true);
@@ -25,6 +28,7 @@ const DetailsPage = ({ id }) => {
     book.volumeInfo?.imageLinks?.thumbnail ||
     "https://th.bing.com/th/id/OIP.wZcfZHnfHGNucVulgNQvDAAAAA?rs=1&pid=ImgDetMain";
   const bookTitle = book.volumeInfo?.title || "Unknown Title";
+  const router = useRouter();
   const shareBook = async () => {
     try {
       await Share.share({
@@ -87,9 +91,6 @@ const DetailsPage = ({ id }) => {
       headerBackground: () => <View style={styles.header}></View>,
       headerRight: () => (
         <View style={{ gap: 10, flexDirection: "row" }}>
-          <TouchableOpacity style={styles.roundButton} onPress={shareBook}>
-            <Ionicons name="share-outline" size={26} color={"#FFF"} />
-          </TouchableOpacity>
           <TouchableOpacity onPress={toggleFavorite} style={styles.roundButton}>
             <Ionicons
               name={isFavorite ? "heart" : "heart-outline"}
@@ -140,46 +141,13 @@ const DetailsPage = ({ id }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <ImageBackground
-        source={{
-          uri: thumbnailUrl,
-        }}
-        style={{ height: 285, justifyContent: "center", alignItems: "center" }}
-        blurRadius={7}
-      >
-        <Image source={{ uri: thumbnailUrl }} style={styles.thumbnail} />
-      </ImageBackground>
+      <BackGroundImage
+        book={book}
+        thumbnailUrl={thumbnailUrl}
+        bookTitle={bookTitle}
+        shareBook={shareBook}
+      />
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>{bookTitle}</Text>
-        <Text style={styles.author}>
-          By {book?.volumeInfo?.authors?.join(", ")}
-        </Text>
-        <View style={styles.infoContainer}>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Language:</Text>
-            <Text style={styles.infoValue}>{book?.volumeInfo?.language}</Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Pages:</Text>
-            <Text style={styles.infoValue}>
-              {book?.volumeInfo?.pageCount || "N/A"}
-            </Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Rating Count:</Text>
-            <Text style={styles.infoValue}>
-              {book?.volumeInfo?.ratingsCount || "N/A"}
-            </Text>
-          </View>
-          <View style={styles.infoItem}>
-            <Text style={styles.infoLabel}>Price:</Text>
-            <Text style={styles.infoValue}>
-              {book?.saleInfo?.listPrice?.amount
-                ? `$${book?.saleInfo?.retailPrice?.amount}`
-                : "N/A"}
-            </Text>
-          </View>
-        </View>
         <Text style={styles.sectionTitle}>Description</Text>
         <Text style={styles.description}>
           {showFullDescription ? description : truncatedDescription}
@@ -201,15 +169,127 @@ const DetailsPage = ({ id }) => {
             </View>
           ))}
         </View>
+        <View>
+          <Text>Discussion Forum</Text>
+          <DiscussionForum bookId={book.id} />
+        </View>
       </View>
     </ScrollView>
+  );
+};
+
+const BackGroundImage = ({ book, thumbnailUrl, bookTitle, shareBook }) => {
+  return (
+    <ImageBackground
+      source={{
+        uri: thumbnailUrl,
+      }}
+      style={{
+        // height: 240,
+        flex: 1,
+        padding: 15,
+        flexDirection: "row",
+      }}
+      blurRadius={7}
+    >
+      <View style={{ flex: 1, flexDirection: "row", gap: 10 }}>
+        <Image source={{ uri: thumbnailUrl }} style={styles.thumbnail} />
+        <View
+          style={{
+            flex: 1,
+            gap: 6,
+          }}
+        >
+          <Text style={styles.title}>{bookTitle}</Text>
+          <Text style={styles.author}>{book?.volumeInfo?.authors[0]} </Text>
+          <Text style={styles.author}>{book?.volumeInfo?.publisher} </Text>
+          <View
+            style={{
+              // flex: 1,
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            <Text style={styles.infoValue}>
+              {book?.volumeInfo?.publishedDate || "N/A"} .{" "}
+              {book?.volumeInfo?.pageCount || "N/A"} pages{" "}
+            </Text>
+          </View>
+          <View style={{ alignItems: "center", flexDirection: "row" }}>
+            <Text
+              style={[styles.infoValue, { fontWeight: "bold", marginRight: 2 }]}
+            >
+              {book?.volumeInfo?.averageRating || "N/A"}
+            </Text>
+            <AntDesign name="star" size={12} color="#A56635" />
+            <Text style={[styles.infoValue, { marginHorizontal: 8 }]}>
+              {book?.volumeInfo?.ratingsCount || "N/A"} ratings .
+            </Text>
+            <Text style={styles.infoValue}>
+              {String(book?.volumeInfo?.language).toUpperCase()}
+            </Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              gap: 5,
+            }}
+          >
+            <BlurredButton
+              iconName="add"
+              title="Add"
+              onPress={() =>
+                router.push({ pathname: "addBookTo", params: { id: book.id } })
+              }
+            />
+            <BlurredButton iconName="share" title="Share" onPress={shareBook} />
+            <BlurredButton id={book.id} iconName="cart" title="Buy" />
+          </View>
+        </View>
+      </View>
+    </ImageBackground>
+  );
+};
+
+const BlurredButton = ({ iconName, title, onPress, id }) => {
+  const handlePress = async () => {
+    if (iconName === "cart") {
+      const buyLink = `https://play.google.com/store/books/details?id=${id}`;
+      const supported = await Linking.canOpenURL(buyLink);
+      if (supported) {
+        await Linking.openURL(buyLink);
+      } else {
+        console.log("Don't know how to open this URL:", buyLink);
+      }
+    } else if (iconName === "book") {
+      const readLink = `http://play.google.com/books/reader?id=${id}`;
+      const supported = await Linking.canOpenURL(readLink);
+      if (supported) {
+        await Linking.openURL(readLink);
+      } else {
+        console.log("Don't know how to open this URL:", readLink);
+      }
+    } else {
+      onPress();
+    }
+  };
+  return (
+    <Pressable
+      onPress={handlePress}
+      style={styles.button}
+      android_ripple={{ color: "rgba(255, 255, 255, 0.3)" }}
+    >
+      <Ionicons name={iconName} size={20} color="white" />
+      <Text style={styles.buttonText}>{title}</Text>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: "#FAF4EF",
     marginBottom: 10,
   },
   contentContainer: {
@@ -222,21 +302,22 @@ const styles = StyleSheet.create({
     borderColor: Colors.grey,
   },
   thumbnail: {
-    width: "40%",
-    height: "85%",
-    resizeMode: "cover",
-    borderRadius: 5,
+    width: "37%",
+    height: "95%",
+    resizeMode: "contain",
+    borderRadius: 11,
+    // alignSelf: "flex-end",
   },
   title: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: "bold",
-    color: "#A56635",
-    marginTop: 12,
+    color: "#FAF4EF",
+    // marginTop: 12,
   },
   author: {
-    fontSize: 16,
-    color: "#9A5F32",
-    marginBottom: 8,
+    fontSize: 14,
+    color: "#FAF4EF",
+    // marginBottom: 8,
   },
   infoContainer: {
     flexDirection: "row",
@@ -257,7 +338,7 @@ const styles = StyleSheet.create({
   },
   infoValue: {
     fontSize: 14,
-    color: "#472C17",
+    color: "#FAF4EF",
   },
   sectionTitle: {
     fontSize: 18,
@@ -271,9 +352,10 @@ const styles = StyleSheet.create({
     color: "#472C17",
   },
   readMore: {
-    textDecorationLine: "underline",
+    // textDecorationLine: "underline",
     color: "#4A3B32",
     marginTop: 8,
+    fontWeight: "bold",
   },
   categoriesContainer: {
     flexDirection: "row",
@@ -298,6 +380,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
+  },
+  button: {
+    width: 65,
+    height: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.4)",
+    borderRadius: 4,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "bold",
   },
 });
 

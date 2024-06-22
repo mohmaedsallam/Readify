@@ -29,7 +29,7 @@ const BookCard = ({ book }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 120,
+    width: 110,
     height: 160,
     margin: 5,
     borderRadius: 8,
@@ -37,8 +37,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5F5F5",
   },
   thumbnail: {
+    // width: "100%",
+    // height: 160,
     width: "100%",
-    height: 160,
+    height: "100%",
+    resizeMode: "contain",
+    borderRadius: 8,
   },
   title: {
     padding: 8,

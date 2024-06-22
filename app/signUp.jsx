@@ -161,8 +161,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginHorizontal: "auto",
-    left: "25%",
-    top: "-5%",
+    // left: "25%",
+    // top: "-5%",
     marginBottom: 20,
     width: 180,
     height: 160,

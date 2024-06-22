@@ -1,12 +1,14 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useContext, useEffect } from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import AuthContextProvider, { AuthContext } from "../store/auth-context";
+import { TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -15,7 +17,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  // initialRouteName: "index",
+  // initialRouteName: "addBookTo",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -49,6 +51,7 @@ export default function RootLayout() {
 const queryClient = new QueryClient();
 function RootLayoutNav() {
   const authCtx = useContext(AuthContext);
+  const router = useRouter();
   return (
     <>
       <AuthContextProvider>
@@ -86,6 +89,66 @@ function RootLayoutNav() {
                 }}
               />
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="addBookTo"
+                options={{
+                  title: " Add To My Books",
+                  presentation: "modal",
+                  animation: "simple_push",
+
+                  headerStyle: {
+                    backgroundColor: "#A56635",
+                  },
+                  headerTitleStyle: {
+                    color: "white",
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="addPost"
+                options={{
+                  title: "Create a Post",
+                  presentation: "modal",
+                  animation: "simple_push",
+
+                  headerStyle: {
+                    backgroundColor: "#A56635",
+                  },
+                  headerTitleStyle: {
+                    color: "white",
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="settings"
+                options={{
+                  title: "Settings",
+                  presentation: "modal",
+                  animation: "simple_push",
+
+                  headerStyle: {
+                    backgroundColor: "#A56635",
+                  },
+                  headerTitleStyle: {
+                    color: "white",
+                  },
+                }}
+              />
+              <Stack.Screen
+                name="help"
+                options={{
+                  title: "Settings",
+                  presentation: "modal",
+                  animation: "simple_push",
+
+                  headerStyle: {
+                    backgroundColor: "#A56635",
+                  },
+                  headerTitleStyle: {
+                    color: "white",
+                  },
+                }}
+              />
             </Stack>
           </QueryClientProvider>
         </BottomSheetModalProvider>

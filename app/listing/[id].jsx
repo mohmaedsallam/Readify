@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View, TouchableOpacity, Share } from "react-native";
-import React, { useLayoutEffect } from "react";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { StyleSheet } from "react-native";
+import React from "react";
+import { useLocalSearchParams } from "expo-router";
 import DetailsPage from "../../components/DetailsPage";
-import { Ionicons } from "@expo/vector-icons";
 import Colors from "../../constants/Colors";
 const Page = () => {
   const { id } = useLocalSearchParams();

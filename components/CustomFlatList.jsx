@@ -1,12 +1,6 @@
 // CustomFlatList.js
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  FlatList,
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-} from "react-native";
+import { FlatList, ActivityIndicator, StyleSheet, Text } from "react-native";
 import BookCard from "./BookCard";
 
 const CustomFlatList = ({ ActivityIndicatorColor, query, onRefresh }) => {
@@ -63,37 +57,3 @@ const styles = StyleSheet.create({
     // backgroundColor: "#FFF8F3",
   },
 });
-
-/* 
-// CustomFlatList.js
- 
- 
-           data={books}
-          renderItem={renderBook}
-          keyExtractor={(item) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          initialNumToRender={20}
-
- 
-
-  const renderItem = ({ item }) => <BookCard book={item.volumeInfo} />;
-
-  return isLoading ? (
-    <ActivityIndicator color={ActivityIndicatorColor} size="large" />
-  ) : (
-    <FlatList
-      data={books}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    />
-  );
-};
-
-export default CustomFlatList;
-
-AIzaSyBtGaliMMof_6FS8qZe6BgxWGrXJL7kuRk
- */

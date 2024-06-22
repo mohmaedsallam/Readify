@@ -7,7 +7,7 @@ import {
   FlatList,
 } from "react-native";
 import React, { useState, useLayoutEffect } from "react";
-import { useLocalSearchParams, useNavigation } from "expo-router";
+import { useNavigation } from "expo-router";
 import Notification from "../components/Notification";
 import { Ionicons } from "@expo/vector-icons";
 import NotificationItem from "../components/NotificationItem";

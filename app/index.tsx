@@ -1,11 +1,27 @@
-import { View, Text, Image } from "react-native";
-import React from "react";
+"use client";
+import { View } from "react-native";
+import React, { useEffect } from "react";
 
 import Onboarding from "react-native-onboarding-swiper";
 import LottieView from "lottie-react-native";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 const index = () => {
+  useEffect(() => {
+    const originalConsoleError = console.error;
+
+    console.error = (...args: any[]) => {
+      if (typeof args[0] === "string" && /defaultProps/.test(args[0])) {
+        return;
+      }
+
+      originalConsoleError(...args);
+    };
+
+    return () => {
+      console.error = originalConsoleError;
+    };
+  }, []);
   const router = useRouter();
   const handleEndOnboarding = () => router.push("/loginSignUp");
   return (

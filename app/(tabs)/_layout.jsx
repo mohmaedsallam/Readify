@@ -1,17 +1,8 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  StatusBar,
-} from "react-native";
+import { Text, StatusBar } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { Header } from "react-native/Libraries/NewAppScreen";
-import HomeHeader from "../../components/HomeHeader";
-import { useQuery } from "@tanstack/react-query";
-import BottomSheet from "../../components/BottomSheet";
+
 import Notification from "../../components/Notification";
 
 export default () => {

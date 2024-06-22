@@ -48,15 +48,60 @@ const More = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={favoritebooks.reverse()}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        columnWrapperStyle={styles.columnWrapper}
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <Text style={{ fontWeight: "bold", marginLeft: 6 }}>
+          {String("Favorites").toUpperCase()}
+        </Text>
+        <FlatList
+          data={favoritebooks.reverse()}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={1}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      <View style={styles.container}>
+        <Text style={{ fontWeight: "bold", marginLeft: 6 }}>
+          {String("Want to Read").toUpperCase()}
+        </Text>
+        <FlatList
+          data={favoritebooks.reverse()}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={1}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      <View style={styles.container}>
+        <Text style={{ fontWeight: "bold", marginLeft: 6 }}>
+          {String("Read").toUpperCase()}
+        </Text>
+        <FlatList
+          data={favoritebooks.reverse()}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={1}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+      <View style={styles.container}>
+        <Text style={{ fontWeight: "bold", marginLeft: 6 }}>
+          {String("Currently Reading").toUpperCase()}
+        </Text>
+        <FlatList
+          data={favoritebooks.reverse()}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          numColumns={1}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+    </>
   );
 };
 
@@ -64,29 +109,29 @@ export default More;
 
 const styles = StyleSheet.create({
   container: {
+    padding: 6,
     flex: 1,
     backgroundColor: "#FFF",
   },
-  columnWrapper: {
-    justifyContent: "space-between",
-    marginHorizontal: 16,
-  },
+
   bookContainer: {
-    width: "48%",
-    marginVertical: 16,
-    alignItems: "center",
+    width: 110,
+    height: 160,
+    margin: 5,
+    borderRadius: 8,
+    overflow: "hidden",
+    backgroundColor: "#F5F5F5",
   },
   bookImage: {
     width: "100%",
-    height: 245,
-    resizeMode: "cover",
+    height: "100%",
+    resizeMode: "contain",
     borderRadius: 8,
   },
   bookTitle: {
-    marginTop: 8,
     fontSize: 16,
     fontWeight: "bold",
-    textAlign: "center",
     color: "#53331B",
+    padding: 2,
   },
 });
